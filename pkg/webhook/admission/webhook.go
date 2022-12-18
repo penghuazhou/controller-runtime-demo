@@ -143,6 +143,7 @@ func (wh *Webhook) InjectLogger(l logr.Logger) error {
 // If the webhook is validating type, it delegates the AdmissionRequest to each handler and
 // deny the request if anyone denies.
 func (wh *Webhook) Handle(ctx context.Context, req Request) Response {
+	log.V(0).Info("mutatingHandler2", "req", req, "kind", req.Kind.Kind)
 	resp := wh.Handler.Handle(ctx, req)
 	if err := resp.Complete(req); err != nil {
 		wh.log.Error(err, "unable to encode response")

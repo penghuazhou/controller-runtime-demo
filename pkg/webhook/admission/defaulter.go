@@ -19,7 +19,6 @@ package admission
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"net/http"
 
 	"k8s.io/apimachinery/pkg/runtime"
@@ -56,10 +55,10 @@ func (h *mutatingHandler) Handle(ctx context.Context, req Request) Response {
 	if h.defaulter == nil {
 		panic("defaulter should never be nil")
 	}
-
+	log.V(0).Info("mutatingHandler1", "req", req, "kind", req.Kind.Kind)
 	// Get the object in the request
 	obj := h.defaulter.DeepCopyObject().(Defaulter)
-	fmt.Printf("mutatingHandler req:%#v, kind:%s", req, req.Kind.Kind)
+	log.V(0).Info("mutatingHandler0", "req", req, "kind", req.Kind.Kind)
 	if err := h.decoder.Decode(req, obj); err != nil {
 		return Errored(http.StatusBadRequest, err)
 	}
